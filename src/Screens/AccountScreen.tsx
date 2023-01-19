@@ -1,10 +1,10 @@
 import {useState, useEffect} from 'react';
 import {StyleSheet, View, Alert, Image} from 'react-native';
 import {supabase} from '../Utils/supabase';
-import Input from '../Components/Input';
 import Button from '../Components/Button';
 import {useAuth} from '../Utils/AuthProvider';
 import {Colors} from '../Utils';
+import { Input } from '@rneui/base';
 
 const avatar = require('../../assets/images/avatars/cat.png');
 

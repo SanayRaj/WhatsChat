@@ -1,21 +1,13 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {Fonts} from '../Utils';
-import {
-  Avatar,
-  FlatList,
-  HStack,
-  IconButton,
-  Input,
-  Text,
-  View,
-  VStack,
-} from 'native-base';
-import {useAuth} from '../Utils/AuthProvider';
+import {FlatList, Text, TouchableOpacity, View, StatusBar} from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import Avatar from '../Components/Avatar';
+import Input from '../Components/Input';
+import {Colors} from '../Utils';
 
 export default function UsersScreen({navigation}: any) {
-  const {user} = useAuth();
+  // const {user} = useAuth();
+
   const Users: {
     name: string;
     number: string;
@@ -49,28 +41,26 @@ export default function UsersScreen({navigation}: any) {
   ];
 
   return (
-    <VStack background={'primary.500'} flex={1}>
-      <Text fontFamily={Fonts.Bold} color="white" py={6} px={4} fontSize="18">
-        Hi {user.username}
-      </Text>
+    <View className="flex-1 bg-black">
+      <StatusBar backgroundColor={Colors.black} barStyle="light-content" />
+      <View className="flex flex-row items-center justify-between mx-4 py-6">
+        <Text className="text-white font-[Montserrat-Bold] text-3xl">
+          Chats
+        </Text>
+        <Avatar
+          w={36}
+          h={36}
+          source={require('../../assets/images/avatars/dog.png')}
+        />
+      </View>
 
-      <View
-        background={'white'}
-        flex={1}
-        w="full"
-        px="4"
-        pt="3"
-        borderTopRadius={30}>
+      <View className="px-4">
         <Input
           placeholder="Search User"
-          variant="filled"
-          borderRadius="full"
-          rightElement={
-            <IconButton>
-              <IonIcon size={18} name="search" />
-            </IconButton>
+          rightIcon={
+            <IonIcon size={22} color={Colors.gray[400]} name="search" />
           }
-          my={2}
+          containerStyle="mb-5"
         />
         <FlatList
           data={Users}
@@ -80,20 +70,22 @@ export default function UsersScreen({navigation}: any) {
                 navigation.navigate('Chat', {name: item.name});
               }}
               activeOpacity={0.6}>
-              <HStack py={2}>
-                <Avatar size="md" source={item.img} />
-                <VStack ml={2}>
-                  <Text fontFamily={Fonts.SemiBold} color={'gray.700'}>
+              <View className="py-1 flex flex-row items-center">
+                <Avatar source={item.img} alt={item.name} />
+                <View className="ml-2">
+                  <Text className="font-[Montserrat-SemiBold] text-gray-300 text-base">
                     {item.name}
                   </Text>
-                  <Text>{item.lastMessage}</Text>
-                </VStack>
-              </HStack>
+                  <Text className="font-[Montserrat-Medium] text-gray-400">
+                    {item.lastMessage}
+                  </Text>
+                </View>
+              </View>
             </TouchableOpacity>
           )}
         />
       </View>
-    </VStack>
+    </View>
   );
 }
 

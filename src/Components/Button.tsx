@@ -1,50 +1,68 @@
-import {View, Text, PressableProps, Pressable, StyleSheet} from 'react-native';
-import React, {ReactComponentElement, ReactElement} from 'react';
-import {Colors, Fonts} from '../Utils';
+import React from 'react';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableOpacityProps
+} from 'react-native';
+import { Colors } from '../Utils';
 
-interface ButtonProps extends PressableProps {
-  type?: 'rounded' | 'box' | 'flat';
+interface ButtonProps extends TouchableOpacityProps {
+  varient?: 'fill' | 'outline' | 'clear';
   children: string;
-  disabled?: any;
+  loading?: boolean;
+  disabled?: boolean;
+  className?: string;
+  textStyles?: string;
 }
 
 export default function Button({
   children,
-  type,
+  varient = 'fill',
   disabled,
+  loading,
+  className,
+  textStyles,
   ...props
 }: ButtonProps) {
-  const buttonTypeStyle = () => {
-    if (type == 'rounded') {
-      return styles.buttonRounded;
-    }
-    if (type == 'box') {
-      return styles.buttonBox;
-    }
-    if (type == 'flat') {
-      return styles.buttonFlat;
-    }
+  const inputVarientStyles = {
+    fill: 'bg-green-500 border-green-500 active:bg-green-600',
+    outline: 'border-neutral-700 bg-transparent active:bg-neutral-900',
+    clear: '',
+  };
+  const inputVarientDisabledStyles = {
+    fill: 'opacity-90',
+    outline: 'bg-gray-100 opacity-60',
+    clear: '',
+  };
+  const inputVarientTextStyles = {
+    fill: 'text-white',
+    outline: 'text-gray-500',
+    clear: 'text-white',
   };
 
   return (
-    <Pressable
-      {...props}
+    <TouchableOpacity
+      activeOpacity={0.9}
       accessibilityRole="button"
       accessibilityLabel={children}
-      style={[
-        styles.buttonBase,
-        buttonTypeStyle(),
-        disabled && type != 'flat' && styles.buttonDisabledStyle,
-      ]}
-      android_ripple={type == 'flat' ? null : {color: Colors.primary[300]}}>
-      <Text
-        style={{
-          color: type == 'flat' ? Colors.gray[500] : Colors.white,
-          fontFamily: Fonts.Medium,
-        }}>
-        {children}
-      </Text>
-    </Pressable>
+      disabled={loading || disabled}
+      className={`px-5 py-2 flex items-center rounded-3xl border-[1px]  ${
+        inputVarientStyles[varient]
+      } ${
+        (loading || disabled) && inputVarientDisabledStyles[varient]
+      } ${className}`}
+      {...props}>
+      {loading && varient == 'fill' ? (
+        <ActivityIndicator color={Colors.white} />
+      ) : (
+        <Text
+          className={`font-[Montserrat-SemiBold]  ${inputVarientTextStyles[varient]} ${textStyles}`}>
+          {children}
+        </Text>
+      )}
+    </TouchableOpacity>
   );
 }
 

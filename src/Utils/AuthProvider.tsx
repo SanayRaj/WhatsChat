@@ -1,8 +1,7 @@
-import {Session} from '@supabase/supabase-js';
-import {Box, Text, Toast} from 'native-base';
-import React, {useContext, useEffect, useState} from 'react';
+import { Session } from '@supabase/supabase-js';
+import React, { useContext, useEffect, useState } from 'react';
 import SplashScreen from '../Components/SplashScreen';
-import {supabase} from './supabase';
+import { supabase } from './supabase';
 
 export type User = {
   id: any;
@@ -53,16 +52,16 @@ export default function AuthProvider({
       if (error instanceof Error) {
         console.log(error);
 
-        Toast.show({
-          render: () => {
-            return (
-              <Box bg="red.500" px="2" py="1" rounded="sm" mb={5}>
-                {/* @ts-ignore */}
-                <Text color="white">{error?.message}</Text>
-              </Box>
-            );
-          },
-        });
+        // Toast.show({
+        //   render: () => {
+        //     return (
+        //       <Box bg="red.500" px="2" py="1" rounded="sm" mb={5}>
+        //         {/* @ts-ignore */}
+        //         <Text color="white">{error?.message}</Text>
+        //       </Box>
+        //     );
+        //   },
+        // });
       }
     } finally {
       setLoading(false);

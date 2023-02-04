@@ -1,7 +1,9 @@
 import React from 'react';
-import AuthProvider from './src/Utils/AuthProvider';
-import AppNavigation from './src/Utils/AppNavigation';
 import {Platform, UIManager} from 'react-native';
+import AppNavigation from './src/Utils/AppNavigation';
+import AuthProvider from './src/Utils/AuthProvider';
+import {View} from 'react-native';
+// import SplashScreen from 'react-native-splash-screen'
 
 function App() {
   if (Platform.OS === 'android')
@@ -9,10 +11,14 @@ function App() {
       UIManager.setLayoutAnimationEnabledExperimental(true);
 
   return (
-    <AuthProvider>
-      <AppNavigation />
-    </AuthProvider>
+    <View className="flex-1 bg-black">
+      <AuthProvider>
+        <AppNavigation />
+      </AuthProvider>
+    </View>
   );
 }
 
 export default App;
+
+('pass.whatsChat');

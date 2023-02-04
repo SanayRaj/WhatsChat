@@ -7,10 +7,11 @@ import React from 'react';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 type IconButtonProps = {
-  icon: string;
-  color: ColorValue;
+  icon: string | React.ReactElement;
+  color?: ColorValue;
   onPress?: (event: GestureResponderEvent) => void;
   size?: number | undefined;
+  containerPadding?: number | undefined;
   backgroundColor?: ColorValue;
 };
 
@@ -18,22 +19,24 @@ export default function IconButton({
   icon,
   color,
   size = 22,
+  containerPadding = 8,
   onPress,
   backgroundColor = 'transparent',
 }: IconButtonProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.5}
+      className="rounded-full flex items-center justify-center"
       style={{
-        borderRadius: 100,
-        padding: 8,
+        padding: containerPadding,
         backgroundColor,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
       }}
       onPress={onPress}>
-      <IonIcon name={icon} size={size} color={color} />
+      {typeof icon === 'string' ? (
+        <IonIcon name={icon} size={size} color={color} />
+      ) : (
+        icon
+      )}
     </TouchableOpacity>
   );
 }

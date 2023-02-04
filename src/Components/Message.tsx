@@ -19,15 +19,15 @@ export default function Message({id, message}: ChatItem) {
             rounded-xl
             ${
               id == '_kannans_'
-                ? 'bg-green-500'
-                : 'bg-transparent border border-neutral-800'
+                ? 'bg-purple-700'
+                : 'bg-transparent border border-bg-800'
             }
         `}>
         <Text
           className={`
-              text-base
+              text-xs
               font-[Montserrat-Medium]
-              ${id == '_kannans_' ? 'text-stone-900' : 'text-stone-50'}
+              ${id == '_kannans_' ? 'text-stone-300' : 'text-stone-300'}
           `}>
           {message}
         </Text>

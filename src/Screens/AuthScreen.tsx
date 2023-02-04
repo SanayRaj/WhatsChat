@@ -7,8 +7,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import {Colors, Fonts} from '../Utils';
-import {supabase} from '../Utils/supabase';
+import {Colors, Fonts, Supabase} from '../Utils';
 
 export default function AuthScreen() {
   const [email, setEmail] = useState('');
@@ -17,7 +16,7 @@ export default function AuthScreen() {
 
   async function signInWithEmail() {
     setLoading(true);
-    const {error} = await supabase.auth.signInWithPassword({
+    const {error} = await Supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
@@ -28,7 +27,7 @@ export default function AuthScreen() {
 
   async function signUpWithEmail() {
     setLoading(true);
-    const {error} = await supabase.auth.signUp({
+    const {error} = await Supabase.auth.signUp({
       email: email,
       password: password,
     });

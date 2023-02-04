@@ -1,17 +1,17 @@
 import {useState, useEffect} from 'react';
-import {StyleSheet, View, Alert, Image} from 'react-native';
-import {supabase} from '../Utils/supabase';
+import {StyleSheet, View, Alert, Image, ActivityIndicator} from 'react-native';
+import {Colors, Supabase} from '../Utils';
 import Button from '../Components/Button';
 import {useAuth} from '../Utils/AuthProvider';
-import {Colors} from '../Utils';
-import { Input } from '@rneui/base';
+import Input from '../Components/Input';
+import Spacer from '../Components/Spacer';
 
 const avatar = require('../../assets/images/avatars/cat.png');
 
 export default function AccountScreen({navigation}: {navigation: any}) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState('');
-  const [website, setWebsite] = useState('');
+  const [email, setEmail] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
 
   const session = useAuth();
@@ -29,9 +29,8 @@ export default function AccountScreen({navigation}: {navigation: any}) {
         return;
       }
 
-      let {data, error, status} = await supabase
-        .from('profiles')
-        .select(`username, website, avatar_url`)
+      let {data, error, status} = await Supabase.from('profiles')
+        .select(`username, email, avatar_url`)
         .eq('id', session?.user.id)
         .single();
       if (error && status !== 406) {
@@ -40,8 +39,10 @@ export default function AccountScreen({navigation}: {navigation: any}) {
 
       if (data) {
         setUsername(data.username);
-        setWebsite(data.website);
+        setEmail(data.email);
         setAvatarUrl(data.avatar_url);
+        console.log(data);
+        
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -54,11 +55,11 @@ export default function AccountScreen({navigation}: {navigation: any}) {
 
   async function updateProfile({
     username,
-    website,
+    email,
     avatar_url,
   }: {
     username: string;
-    website: string;
+    email: string;
     avatar_url: string;
   }) {
     try {
@@ -68,12 +69,12 @@ export default function AccountScreen({navigation}: {navigation: any}) {
       const updates = {
         id: session?.user.id,
         username,
-        website,
+        email,
         avatar_url,
         updated_at: new Date(),
       };
 
-      let {error} = await supabase.from('profiles').upsert(updates);
+      let {error} = await Supabase.from('profiles').upsert(updates);
 
       if (error) {
         throw error;
@@ -88,78 +89,55 @@ export default function AccountScreen({navigation}: {navigation: any}) {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.avatar}>
-        <Image source={avatar} style={{width: 80, height: 80}} />
-      </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+    <>
+      <View className="bg-black flex flex-1 px-8 justify-center">
+        <View className="rounded-full flex items-center">
+          <Image source={avatar} className="w-28 h-28 rounded-full" />
+        </View>
+        <Spacer height={40} />
         <Input
           placeholder="Email"
           value={session?.user?.email}
-          editable={false}
+          disabled={true}
         />
-      </View>
-      <View style={styles.verticallySpaced}>
+        <Spacer height={8} />
         <Input
           placeholder="Username"
           value={username || ''}
           onChangeText={text => setUsername(text)}
         />
-      </View>
-      <View style={styles.verticallySpaced}>
+        <Spacer height={8} />
         <Input
           placeholder="Website"
-          value={website || ''}
-          onChangeText={text => setWebsite(text)}
+          value={email || ''}
+          onChangeText={text => setEmail(text)}
         />
-      </View>
+        <Spacer height={34} />
 
-      <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
+          className="my-2"
+          disabled={loading}
+          children="Sign Out"
+          onPress={() => Supabase.auth.signOut()}
+        />
+
+        <Button
+          className="my-2"
           children={loading ? 'Loading ...' : 'Update'}
           onPress={() =>
-            updateProfile({username, website, avatar_url: avatarUrl})
+            updateProfile({username, email, avatar_url: avatarUrl})
           }
           disabled={loading}
-          type={'flat'}
+          varient="clear"
         />
       </View>
-
-      <View style={styles.verticallySpaced}>
-        <Button
-          disabled
-          children="Sign Out"
-          onPress={() => supabase.auth.signOut()}
-        />
-      </View>
-    </View>
+      {loading && (
+        <View
+          style={StyleSheet.absoluteFill}
+          className="bg-black bg-opacity-10 opacity-60 flex items-center justify-center">
+          <ActivityIndicator size={50} color={Colors.primary[500]} />
+        </View>
+      )}
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  avatar: {
-    backgroundColor: Colors.gray[500],
-    elevation: 8,
-    borderRadius: 100,
-    borderColor: Colors.stone[800],
-    borderWidth: 1,
-    overflow: 'hidden',
-  },
-  verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignSelf: 'stretch',
-  },
-  mt20: {
-    marginTop: 20,
-  },
-  container: {
-    backgroundColor: Colors.gray[100],
-    flex: 1,
-    display: 'flex',
-    // justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 40,
-    paddingTop: '28%',
-  },
-});

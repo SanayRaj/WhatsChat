@@ -1,6 +1,7 @@
 import Fonts from './fonts';
 import Colors from './colors';
-import Data from './data';
+import {Data, UsersData} from './data';
 import FormRules from './formRules';
+import Fireabse from './fireabase.config';
 
-export {Fonts, Colors, Data, FormRules};
+export {Fonts, Colors, Data, UsersData, FormRules, Fireabse};

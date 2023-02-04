@@ -5,16 +5,16 @@ import {Colors} from '../Utils';
 export interface InputProps extends TextInputProps {
   disabled?: boolean;
   invalid?: boolean;
-  rightIcon?: React.ReactNode;
-  leftIcon?: React.ReactNode;
+  rightElement?: React.ReactNode;
+  leftElement?: React.ReactNode;
   containerStyle?: string;
 }
 
 export default function Input({
   disabled,
   invalid,
-  rightIcon,
-  leftIcon,
+  rightElement,
+  leftElement,
   containerStyle,
   ...props
 }: InputProps) {
@@ -24,36 +24,34 @@ export default function Input({
             flex
             flex-row
             items-center
-            border-[1px] 
             rounded-lg
-            border-neutral-800 px-2
-            focus:border-emerald-500
-            bg-neutral-900
+            border-bg-500 px-4
+            focus:border-primary-500
+            bg-neutral-800
             ${invalid && 'border-red-500'}
-            ${disabled && 'bg-neutral-800 border-neutral-700 opacity-40'}
+            ${disabled && 'bg-bg-300 border-bg-500 opacity-40'}
             ${containerStyle}
       `}>
-      {leftIcon && leftIcon}
+      {leftElement && leftElement}
       <TextInput
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect={false}
         editable={!disabled}
-        selectionColor={Colors.green[600]}
+        selectionColor={Colors.primary[600]}
         placeholderTextColor={Colors.neutral[400]}
         className={`
           flex-1
           font-[Montserrat-Regular]
           text-white 
-          p-2
+           h-12
         `}
         {...props}
       />
-      {rightIcon && rightIcon}
+      {rightElement && rightElement}
     </View>
   );
 }
-
 
 //sanju.p7306@gmail.com
 //pass.word

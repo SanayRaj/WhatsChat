@@ -4,11 +4,11 @@ import React from 'react';
 type AvatarProps = {
   w?: number | string;
   h?: number | string;
-  alt?: string;
+
   source: ImageSourcePropType;
 };
 
-export default function Avatar({source, w = 52, h = 52, alt}: AvatarProps) {
+export default function Avatar({source, w = 52, h = 52}: AvatarProps) {
   return (
     <Image
       style={{

@@ -4,9 +4,9 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableOpacityProps
+  TouchableOpacityProps,
 } from 'react-native';
-import { Colors } from '../Utils';
+import {Colors} from '../Utils';
 
 interface ButtonProps extends TouchableOpacityProps {
   varient?: 'fill' | 'outline' | 'clear';
@@ -27,38 +27,38 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const inputVarientStyles = {
-    fill: 'bg-green-500 border-green-500 active:bg-green-600',
-    outline: 'border-neutral-700 bg-transparent active:bg-neutral-900',
+    fill: 'bg-green-600 active:bg-green-700 active:scale-2',
+    outline: 'border border-neutral-700 bg-transparent active:bg-neutral-900',
     clear: '',
   };
   const inputVarientDisabledStyles = {
-    fill: 'opacity-90',
-    outline: 'bg-gray-100 opacity-60',
-    clear: '',
+    fill: ' border opacity-90 bg-green-600 border-green-700',
+    outline: 'bg-neutral-800 opacity-70',
+    clear: 'opacity-50 bg-neutral-800 py-3',
   };
   const inputVarientTextStyles = {
-    fill: 'text-white',
+    fill: 'text-black',
     outline: 'text-gray-500',
     clear: 'text-white',
   };
 
   return (
     <TouchableOpacity
-      activeOpacity={0.9}
+      activeOpacity={0.8}
       accessibilityRole="button"
       accessibilityLabel={children}
       disabled={loading || disabled}
-      className={`px-5 py-2 flex items-center rounded-3xl border-[1px]  ${
+      className={`px-5 py-3 flex items-center rounded-3xl active:scale-[0.98] transition-all ${
         inputVarientStyles[varient]
       } ${
         (loading || disabled) && inputVarientDisabledStyles[varient]
       } ${className}`}
       {...props}>
       {loading && varient == 'fill' ? (
-        <ActivityIndicator color={Colors.white} />
+        <ActivityIndicator color={Colors.black} />
       ) : (
         <Text
-          className={`font-[Montserrat-SemiBold]  ${inputVarientTextStyles[varient]} ${textStyles}`}>
+          className={`font-sansMedium text-sm  ${inputVarientTextStyles[varient]} ${textStyles}`}>
           {children}
         </Text>
       )}

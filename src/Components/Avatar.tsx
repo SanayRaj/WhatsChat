@@ -1,4 +1,4 @@
-import {ImageSourcePropType, Image} from 'react-native';
+import {ImageSourcePropType, Image, StyleSheet} from 'react-native';
 import React from 'react';
 
 type AvatarProps = {
@@ -10,15 +10,14 @@ type AvatarProps = {
 
 export default function Avatar({source, w = 52, h = 52}: AvatarProps) {
   return (
-    <Image
-      style={{
-        width: w,
-        height: h,
-        borderRadius: 100,
-        borderWidth: 1,
-        borderColor: '#ccc',
-      }}
-      source={source}
-    />
+    <Image style={(styles.avatar, {width: w, height: h})} source={source} />
   );
 }
+
+const styles = StyleSheet.create({
+  avatar: {
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+});

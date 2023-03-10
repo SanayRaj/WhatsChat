@@ -15,8 +15,6 @@ import ValidationInput from '../../Components/ValidationInput';
 import {Colors, FormRules} from '../../Utils';
 // import {Fireabse} from '../../Utils';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import {createUserWithEmailAndPassword} from 'firebase/auth/react-native';
-import {FirebaseAuth} from '../../Utils/fireabase.config';
 
 export default function SignUpScreen({navigation}: any) {
   const [passwordShown, setPasswordShown] = useState(false);
@@ -35,28 +33,28 @@ export default function SignUpScreen({navigation}: any) {
   async function signUpWithEmail(value: any) {
     Keyboard.dismiss();
     setLoading(true);
-    createUserWithEmailAndPassword(FirebaseAuth, value.email, value.password)
-      .then((userCredential: {user: any}) => {
-        console.log('Authentication Success', userCredential.user?.email);
-        setToast({
-          varient: 'success',
-          shown: true,
-          message: 'SignUp Success, Check your Inbox for Email verification',
-        });
-      })
-      .catch((error: {code: any; message: any}) => {
-        console.log('Auth Error:', error.message);
-        setToast({
-          varient: 'error',
-          shown: true,
-          message: error?.message
-            ? `Error: ${error.message}`
-            : 'Oops... Something Went wrong',
-        });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    // createUserWithEmailAndPassword(FirebaseAuth, value.email, value.password)
+    //   .then((userCredential: {user: any}) => {
+    //     console.log('Authentication Success', userCredential.user?.email);
+    //     setToast({
+    //       varient: 'success',
+    //       shown: true,
+    //       message: 'SignUp Success, Check your Inbox for Email verification',
+    //     });
+    //   })
+    //   .catch((error: {code: any; message: any}) => {
+    //     console.log('Auth Error:', error.message);
+    //     setToast({
+    //       varient: 'error',
+    //       shown: true,
+    //       message: error?.message
+    //         ? `Error: ${error.message}`
+    //         : 'Oops... Something Went wrong',
+    //     });
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
   }
 
   // Toast.show({

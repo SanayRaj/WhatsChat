@@ -1,4 +1,3 @@
-import {Session} from '@supabase/supabase-js';
 import React, {useContext, useEffect, useState} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 // import SplashScreen from '../Components/SplashScreen';
@@ -25,8 +24,8 @@ export default function AuthProvider({
   children: React.ReactElement;
 }) {
   const [user, setUser] = useState<User | null>(null);
-  const [appSession, setAppSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [appSession, setAppSession] = useState<any | null>(null);
+  const [loading, setLoading] = useState(false);
 
   // async function getProfile() {
   //   try {
@@ -79,8 +78,9 @@ export default function AuthProvider({
   //   });
   // }, []);
 
-  // if (!loading) SplashScreen.hide();
-  // console.log(loading);
+  if (!loading) {
+    SplashScreen.hide();
+  }
 
   return (
     <AuthContext.Provider value={{session: appSession, user}}>

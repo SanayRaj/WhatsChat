@@ -8,5 +8,5 @@ export default function Spacer({
   width?: number;
   height?: number;
 }) {
-  return <View style={{height, width}}></View>;
+  return <View style={{height, width}} />;
 }

@@ -17,7 +17,9 @@ export default function AccountScreen({navigation}: {navigation: any}) {
   const session = useAuth();
 
   useEffect(() => {
-    if (session) getProfile();
+    if (session) {
+      getProfile();
+    }
   }, [session]);
 
   async function getProfile() {
@@ -30,7 +32,7 @@ export default function AccountScreen({navigation}: {navigation: any}) {
       }
 
       let {data, error, status} = await Supabase.from('profiles')
-        .select(`username, email, avatar_url`)
+        .select('username, email, avatar_url')
         .eq('id', session?.user.id)
         .single();
       if (error && status !== 406) {
@@ -42,7 +44,6 @@ export default function AccountScreen({navigation}: {navigation: any}) {
         setEmail(data.email);
         setAvatarUrl(data.avatar_url);
         console.log(data);
-        
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -64,7 +65,9 @@ export default function AccountScreen({navigation}: {navigation: any}) {
   }) {
     try {
       setLoading(true);
-      if (!session?.user) throw new Error('No user on the session!');
+      if (!session?.user) {
+        throw new Error('No user on the session!');
+      }
 
       const updates = {
         id: session?.user.id,

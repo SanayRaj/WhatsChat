@@ -12,41 +12,36 @@ import IconButton from '../../Components/IconButton';
 import Spacer from '../../Components/Spacer';
 import ValidationInput from '../../Components/ValidationInput';
 import {Colors, FormRules} from '../../Utils';
-import {
-  signInWithEmailAndPassword,
-  signInWithPhoneNumber,
-} from 'firebase/auth/react-native';
-import {FirebaseAuth} from '../../Utils/fireabase.config';
 
 export default function PhoneAuthScreen({navigation}: any) {
   const [loading, setLoading] = useState<boolean>(false);
   const {control, handleSubmit} = useForm();
 
-  async function signInWithEmail(value: any) {
+  async function signInWithEmail(_value: any) {
     Keyboard.dismiss();
     setLoading(true);
-    signInWithPhoneNumber(FirebaseAuth, value.phone)
-      .then((userCredential: {user: any}) => {
-        console.log('Authentication Success', userCredential.user?.email);
-        // setToast({
-        //   varient: 'success',
-        //   shown: true,
-        //   message: 'SignUp Success, Check your Inbox for Email verification',
-        // });
-      })
-      .catch((error: {code: any; message: any}) => {
-        console.log('Auth Error:', error.message);
-        // setToast({
-        //   varient: 'error',
-        //   shown: true,
-        //   message: error?.message
-        //     ? `Error: ${error.message}`
-        //     : 'Oops... Something Went wrong',
-        // });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    //   signInWithPhoneNumber(FirebaseAuth, value.phone)
+    //     .then((userCredential: {user: any}) => {
+    //       console.log('Authentication Success', userCredential.user?.email);
+    //       // setToast({
+    //       //   varient: 'success',
+    //       //   shown: true,
+    //       //   message: 'SignUp Success, Check your Inbox for Email verification',
+    //       // });
+    //     })
+    //     .catch((error: {code: any; message: any}) => {
+    //       console.log('Auth Error:', error.message);
+    //       // setToast({
+    //       //   varient: 'error',
+    //       //   shown: true,
+    //       //   message: error?.message
+    //       //     ? `Error: ${error.message}`
+    //       //     : 'Oops... Something Went wrong',
+    //       // });
+    //     })
+    //     .finally(() => {
+    //       setLoading(false);
+    //     });
   }
 
   return (

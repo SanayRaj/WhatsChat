@@ -13,8 +13,6 @@ import IconButton from '../../Components/IconButton';
 import Spacer from '../../Components/Spacer';
 import ValidationInput from '../../Components/ValidationInput';
 import {Colors, FormRules} from '../../Utils';
-import {signInWithEmailAndPassword} from 'firebase/auth/react-native';
-import {FirebaseAuth} from '../../Utils/fireabase.config';
 // import {Supabase} from '../../Utils';
 
 export default function SignInScreen({navigation}: any) {
@@ -25,28 +23,28 @@ export default function SignInScreen({navigation}: any) {
   async function signInWithEmail(value: any) {
     Keyboard.dismiss();
     setLoading(true);
-    signInWithEmailAndPassword(FirebaseAuth, value.email, value.password)
-      .then((userCredential: {user: any}) => {
-        console.log('Authentication Success', userCredential.user?.email);
-        // setToast({
-        //   varient: 'success',
-        //   shown: true,
-        //   message: 'SignUp Success, Check your Inbox for Email verification',
-        // });
-      })
-      .catch((error: {code: any; message: any}) => {
-        console.log('Auth Error:', error.message);
-        // setToast({
-        //   varient: 'error',
-        //   shown: true,
-        //   message: error?.message
-        //     ? `Error: ${error.message}`
-        //     : 'Oops... Something Went wrong',
-        // });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    // signInWithEmailAndPassword(FirebaseAuth, value.email, value.password)
+    //   .then((userCredential: {user: any}) => {
+    //     console.log('Authentication Success', userCredential.user?.email);
+    //     // setToast({
+    //     //   varient: 'success',
+    //     //   shown: true,
+    //     //   message: 'SignUp Success, Check your Inbox for Email verification',
+    //     // });
+    //   })
+    //   .catch((error: {code: any; message: any}) => {
+    //     console.log('Auth Error:', error.message);
+    //     // setToast({
+    //     //   varient: 'error',
+    //     //   shown: true,
+    //     //   message: error?.message
+    //     //     ? `Error: ${error.message}`
+    //     //     : 'Oops... Something Went wrong',
+    //     // });
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
   }
 
   useEffect(() => {
@@ -116,6 +114,6 @@ export default function SignInScreen({navigation}: any) {
       </KeyboardAvoidingView>
     );
   } else {
-    return <View></View>;
+    return <View />;
   }
 }

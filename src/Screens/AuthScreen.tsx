@@ -21,7 +21,9 @@ export default function AuthScreen() {
       password: password,
     });
 
-    if (error) Alert.alert(error.message);
+    if (error) {
+      Alert.alert(error.message);
+    }
     setLoading(false);
   }
 
@@ -32,7 +34,9 @@ export default function AuthScreen() {
       password: password,
     });
 
-    if (error) Alert.alert(error.message);
+    if (error) {
+      Alert.alert(error.message);
+    }
     setLoading(false);
   }
 

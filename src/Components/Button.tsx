@@ -1,12 +1,6 @@
+import {Pressable, SxProp, Text} from 'dripsy';
 import React from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableOpacityProps,
-} from 'react-native';
-import {Colors} from '../Utils';
+import {TouchableOpacityProps} from 'react-native';
 
 interface ButtonProps extends TouchableOpacityProps {
   varient?: 'fill' | 'outline' | 'clear';
@@ -16,81 +10,87 @@ interface ButtonProps extends TouchableOpacityProps {
   className?: string;
   textStyles?: string;
 }
+interface styleType {
+  fill: SxProp;
+  outline: SxProp;
+  clear: SxProp;
+}
+
+// const DripsyButton = styled(TouchableOpacity)((props: {success: boolean}) => ({
+//   color: props.success ? 'success' : 'rgb(22 163 74)',
+// }));
 
 export default function Button({
   children,
-  varient = 'fill',
+  varient = 'outline',
   disabled,
   loading,
-  className,
-  textStyles,
-  ...props
 }: ButtonProps) {
-  const inputVarientStyles = {
-    fill: 'bg-green-600 active:bg-green-700 active:scale-2',
-    outline: 'border border-neutral-700 bg-transparent active:bg-neutral-900',
-    clear: '',
+  const inputVarientStyles: styleType = {
+    fill: {
+      backgroundColor: '$primary.600',
+      borderColor: '$primary.600',
+    },
+    outline: {
+      borderColor: '$primary.600',
+      backgroundColor: 'transparent',
+    },
+    clear: {},
   };
-  const inputVarientDisabledStyles = {
-    fill: ' border opacity-90 bg-green-600 border-green-700',
-    outline: 'bg-neutral-800 opacity-70',
-    clear: 'opacity-50 bg-neutral-800 py-3',
-  };
-  const inputVarientTextStyles = {
-    fill: 'text-black',
-    outline: 'text-gray-500',
-    clear: 'text-white',
+  // const inputVarientDisabledStyles: styleType = {
+  //   fill: ' border opacity-90 bg-green-600 border-green-700',
+  //   outline: 'bg-neutral-800 opacity-70',
+  //   clear: 'opacity-50 bg-neutral-800 py-3',
+  // };
+
+  const inputVarientTextStyles: styleType = {
+    fill: {color: '#000'},
+    outline: {color: '#CCC'},
+    clear: {color: '#FFF'},
   };
 
+  // return (
+  //   <TouchableOpacity
+  //     activeOpacity={0.8}
+  //     accessibilityRole="button"
+  //     accessibilityLabel={children}
+  //     disabled={loading || disabled}
+  //     className={`px-5 py-3 flex items-center  rounded-3xl active:scale-[0.98] transition-all ${
+  //       inputVarientStyles[varient]
+  //     } ${
+  //       (loading || disabled) && inputVarientDisabledStyles[varient]
+  //     } ${className}`}
+  //     {...props}>
+  //     {loading && varient == 'fill' ? (
+  //       <ActivityIndicator color={Colors.black} />
+  //     ) : (
+  //       <Text
+  //         className={`font-sansMedium text-sm  ${inputVarientTextStyles[varient]} ${textStyles}`}>
+  //         {children}
+  //       </Text>
+  //     )}
+  //   </TouchableOpacity>
+  // );
   return (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      accessibilityRole="button"
-      accessibilityLabel={children}
-      disabled={loading || disabled}
-      className={`px-5 py-3 flex items-center rounded-3xl active:scale-[0.98] transition-all ${
-        inputVarientStyles[varient]
-      } ${
-        (loading || disabled) && inputVarientDisabledStyles[varient]
-      } ${className}`}
-      {...props}>
-      {loading && varient == 'fill' ? (
-        <ActivityIndicator color={Colors.black} />
-      ) : (
-        <Text
-          className={`font-sansMedium text-sm  ${inputVarientTextStyles[varient]} ${textStyles}`}>
-          {children}
-        </Text>
-      )}
-    </TouchableOpacity>
+    <Pressable
+      sx={{
+        borderWidth: 3,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '$3',
+        borderRadius: 20,
+        ...inputVarientStyles[varient],
+      }}
+      disabled={loading || disabled}>
+      <Text
+        sx={{
+          fontWeight: '700',
+          fontSize: '$1',
+          ...inputVarientTextStyles[varient],
+        }}>
+        {children}
+      </Text>
+    </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  buttonBase: {
-    backgroundColor: Colors.primary[500],
-    width: '100%',
-    paddingVertical: 12,
-    borderRadius: 100,
-    marginVertical: 8,
-    elevation: 4,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  buttonRounded: {
-    borderRadius: 100,
-  },
-  buttonBox: {
-    borderRadius: 8,
-  },
-  buttonFlat: {
-    borderRadius: 8,
-    backgroundColor: 'transparent',
-    elevation: 0,
-  },
-  buttonDisabledStyle: {
-    backgroundColor: Colors.primary[400],
-  },
-});

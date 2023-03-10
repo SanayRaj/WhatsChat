@@ -83,7 +83,7 @@ export default function UsersScreen({navigation}: any) {
                       {item.username}
                     </Text>
                     {/* <Text className="font-[Montserrat-Medium] text-gray-400">
-                  
+
                     </Text> */}
                   </View>
                 </View>

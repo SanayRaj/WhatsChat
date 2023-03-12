@@ -1,9 +1,6 @@
-import {
-  ColorValue,
-  GestureResponderEvent,
-  TouchableOpacity,
-} from 'react-native';
+import {Pressable} from 'dripsy';
 import React from 'react';
+import {ColorValue, GestureResponderEvent} from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 type IconButtonProps = {
@@ -24,10 +21,12 @@ export default function IconButton({
   backgroundColor = 'transparent',
 }: IconButtonProps) {
   return (
-    <TouchableOpacity
-      activeOpacity={0.5}
-      className="rounded-full flex items-center justify-center"
-      style={{
+    <Pressable
+      sx={{
+        borderRadius: 100,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: containerPadding,
         backgroundColor,
       }}
@@ -37,6 +36,6 @@ export default function IconButton({
       ) : (
         icon
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 }

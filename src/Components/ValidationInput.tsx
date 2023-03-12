@@ -1,3 +1,4 @@
+import {Text, View} from 'dripsy';
 import React from 'react';
 import {
   Control,
@@ -5,7 +6,6 @@ import {
   FieldValues,
   RegisterOptions,
 } from 'react-hook-form';
-import {Text, View, LayoutAnimation} from 'react-native';
 import Input, {InputProps} from './Input';
 
 interface ValidationInputProps extends InputProps {
@@ -29,7 +29,7 @@ export default function ValidationInput({
       name={name}
       rules={rules}
       render={({field: {onChange, onBlur, value}, formState: {errors}}) => (
-        <View className="flex flex-col">
+        <View>
           <Input
             {...props}
             invalid={errors[name] ? true : false}
@@ -38,7 +38,7 @@ export default function ValidationInput({
             value={value}
           />
           {errors[name] && (
-            <Text className="text-red-500 text-sm font-[Montserrat-Medium]">
+            <Text sx={{color: '$red.500', fontWeight: 500, py: '$1'}}>
               {errors[name]?.message?.toString()}
             </Text>
           )}

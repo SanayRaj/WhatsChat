@@ -1,31 +1,7 @@
 const Colors = {
-  white: '#FFF',
-  black: '#000',
-  bg: {
-    50: '#383838',
-    100: '#353535',
-    200: '#333333',
-    300: '#2F2F2F',
-    400: '#2C2C2C',
-    500: '#272727',
-    600: '#252525',
-    700: '#232323',
-    800: '#1E1E1E',
-    900: '#121212',
-  },
-  primary: {
-    50: '#f0fdf4',
-    100: '#dcfce7',
-    200: '#bbf7d0',
-    300: '#86efac',
-    400: '#4ade80',
-    500: '#22c55e',
-    600: '#16a34a',
-    700: '#15803d',
-    800: '#166534',
-    900: '#14532d',
-  },
-  slate: {
+  $white: '#FFF',
+  $black: '#000',
+  $slate: {
     50: '#f8fafc',
     100: '#f1f5f9',
     200: '#e2e8f0',
@@ -37,7 +13,7 @@ const Colors = {
     800: '#1e293b',
     900: '#0f172a',
   },
-  gray: {
+  $gray: {
     50: '#f9fafb',
     100: '#f3f4f6',
     200: '#e5e7eb',
@@ -49,7 +25,7 @@ const Colors = {
     800: '#1f2937',
     900: '#111827',
   },
-  zinc: {
+  $zinc: {
     50: '#fafafa',
     100: '#f4f4f5',
     200: '#e4e4e7',
@@ -61,7 +37,7 @@ const Colors = {
     800: '#27272a',
     900: '#18181b',
   },
-  neutral: {
+  $neutral: {
     50: '#fafafa',
     100: '#f5f5f5',
     200: '#e5e5e5',
@@ -73,7 +49,7 @@ const Colors = {
     800: '#262626',
     900: '#171717',
   },
-  stone: {
+  $stone: {
     50: '#fafaf9',
     100: '#f5f5f4',
     200: '#e7e5e4',
@@ -85,7 +61,7 @@ const Colors = {
     800: '#292524',
     900: '#1c1917',
   },
-  red: {
+  $red: {
     50: '#fef2f2',
     100: '#fee2e2',
     200: '#fecaca',
@@ -97,7 +73,7 @@ const Colors = {
     800: '#991b1b',
     900: '#7f1d1d',
   },
-  orange: {
+  $orange: {
     50: '#fff7ed',
     100: '#ffedd5',
     200: '#fed7aa',
@@ -109,7 +85,7 @@ const Colors = {
     800: '#9a3412',
     900: '#7c2d12',
   },
-  amber: {
+  $amber: {
     50: '#fffbeb',
     100: '#fef3c7',
     200: '#fde68a',
@@ -121,7 +97,7 @@ const Colors = {
     800: '#92400e',
     900: '#78350f',
   },
-  yellow: {
+  $yellow: {
     50: '#fefce8',
     100: '#fef9c3',
     200: '#fef08a',
@@ -133,7 +109,7 @@ const Colors = {
     800: '#854d0e',
     900: '#713f12',
   },
-  lime: {
+  $lime: {
     50: '#f7fee7',
     100: '#ecfccb',
     200: '#d9f99d',
@@ -145,7 +121,7 @@ const Colors = {
     800: '#3f6212',
     900: '#365314',
   },
-  green: {
+  $green: {
     50: '#f0fdf4',
     100: '#dcfce7',
     200: '#bbf7d0',
@@ -157,7 +133,7 @@ const Colors = {
     800: '#166534',
     900: '#14532d',
   },
-  emerald: {
+  $emerald: {
     50: '#ecfdf5',
     100: '#d1fae5',
     200: '#a7f3d0',
@@ -169,7 +145,7 @@ const Colors = {
     800: '#065f46',
     900: '#064e3b',
   },
-  teal: {
+  $teal: {
     50: '#f0fdfa',
     100: '#ccfbf1',
     200: '#99f6e4',
@@ -181,7 +157,7 @@ const Colors = {
     800: '#115e59',
     900: '#134e4a',
   },
-  cyan: {
+  $cyan: {
     50: '#ecfeff',
     100: '#cffafe',
     200: '#a5f3fc',
@@ -193,7 +169,7 @@ const Colors = {
     800: '#155e75',
     900: '#164e63',
   },
-  sky: {
+  $sky: {
     50: '#f0f9ff',
     100: '#e0f2fe',
     200: '#bae6fd',
@@ -205,7 +181,7 @@ const Colors = {
     800: '#075985',
     900: '#0c4a6e',
   },
-  blue: {
+  $blue: {
     50: '#eff6ff',
     100: '#dbeafe',
     200: '#bfdbfe',
@@ -217,7 +193,7 @@ const Colors = {
     800: '#1e40af',
     900: '#1e3a8a',
   },
-  indigo: {
+  $indigo: {
     50: '#eef2ff',
     100: '#e0e7ff',
     200: '#c7d2fe',
@@ -229,7 +205,7 @@ const Colors = {
     800: '#3730a3',
     900: '#312e81',
   },
-  violet: {
+  $violet: {
     50: '#f5f3ff',
     100: '#ede9fe',
     200: '#ddd6fe',
@@ -241,7 +217,7 @@ const Colors = {
     800: '#5b21b6',
     900: '#4c1d95',
   },
-  purple: {
+  $purple: {
     50: '#faf5ff',
     100: '#f3e8ff',
     200: '#e9d5ff',
@@ -253,7 +229,7 @@ const Colors = {
     800: '#6b21a8',
     900: '#581c87',
   },
-  fuchsia: {
+  $fuchsia: {
     50: '#fdf4ff',
     100: '#fae8ff',
     200: '#f5d0fe',
@@ -265,7 +241,7 @@ const Colors = {
     800: '#86198f',
     900: '#701a75',
   },
-  pink: {
+  $pink: {
     50: '#fdf2f8',
     100: '#fce7f3',
     200: '#fbcfe8',
@@ -277,7 +253,7 @@ const Colors = {
     800: '#9d174d',
     900: '#831843',
   },
-  rose: {
+  $rose: {
     50: '#fff1f2',
     100: '#ffe4e6',
     200: '#fecdd3',

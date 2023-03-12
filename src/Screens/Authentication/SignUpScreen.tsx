@@ -1,93 +1,44 @@
+import {Text, View} from 'dripsy';
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {
   Keyboard,
   KeyboardAvoidingView,
   StatusBar,
-  Text,
-  View,
+  StyleSheet,
 } from 'react-native';
-import Button from '../../Components/Button';
-import IconButton from '../../Components/IconButton';
-import Spacer from '../../Components/Spacer';
-import Toast from '../../Components/Toast';
-import ValidationInput from '../../Components/ValidationInput';
+import {Button, IconButton, Spacer, ValidationInput} from '../../Components';
 import {Colors, FormRules} from '../../Utils';
-// import {Fireabse} from '../../Utils';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 export default function SignUpScreen({navigation}: any) {
   const [passwordShown, setPasswordShown] = useState(false);
   const {handleSubmit, control} = useForm();
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState<{
-    varient: 'success' | 'error';
-    shown: boolean;
-    message: string;
-  }>({
-    varient: 'success',
-    shown: false,
-    message: '',
-  });
 
   async function signUpWithEmail(value: any) {
     Keyboard.dismiss();
     setLoading(true);
-    // createUserWithEmailAndPassword(FirebaseAuth, value.email, value.password)
-    //   .then((userCredential: {user: any}) => {
-    //     console.log('Authentication Success', userCredential.user?.email);
-    //     setToast({
-    //       varient: 'success',
-    //       shown: true,
-    //       message: 'SignUp Success, Check your Inbox for Email verification',
-    //     });
-    //   })
-    //   .catch((error: {code: any; message: any}) => {
-    //     console.log('Auth Error:', error.message);
-    //     setToast({
-    //       varient: 'error',
-    //       shown: true,
-    //       message: error?.message
-    //         ? `Error: ${error.message}`
-    //         : 'Oops... Something Went wrong',
-    //     });
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+    return value;
   }
 
-  // Toast.show({
-  //   render: () => {
-  //     return (
-  //       <Box bg="red.500" px="3" py="2" rounded="sm" mb={5}>
-  //         <Text color="white">
-  //           {error?.message
-  //             ? error.message
-  //             : 'Oops... Something Went wrong'}
-  //         </Text>
-  //       </Box>
-  //     );
-  //   },
-  // });
-
-  // Toast.show({
-  //   render: () => {
-  //     return (
-  //       <Box bg="emerald.500" px="3" py="2" rounded="sm" mb={5}>
-  //         <Text color="white">
-  //           SignUp Success, Check your Inbox for Email verification
-  //         </Text>
-  //       </Box>
-  //     );
-  //   },
-  // });
-
   return (
-    <KeyboardAvoidingView className="flex-1">
-      <StatusBar backgroundColor={Colors.black} barStyle="light-content" />
-      <View className="flex-1 bg-black">
-        <View className="flex justify-center items-start py-3 px-4">
+    <KeyboardAvoidingView style={styles.wraper}>
+      <StatusBar backgroundColor={Colors.$black} barStyle="light-content" />
+      <View
+        sx={{
+          display: 'flex',
+          flex: 1,
+          mx: 'auto',
+          maxWidth: 576,
+          backgroundColor: '$black',
+        }}>
+        <View
+          sx={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            width: '100%',
+          }}>
           <IconButton
             icon={'chevron-back'}
             color={'white'}
@@ -95,11 +46,12 @@ export default function SignUpScreen({navigation}: any) {
             onPress={() => navigation.goBack()}
           />
         </View>
-        <View className="flex flex-1 px-8 justify-center">
-          <Text className="text-4xl font-[Montserrat-SemiBold] text-gray-200">
+        <View
+          sx={{display: 'flex', flex: 1, px: '$3', justifyContent: 'center'}}>
+          <Text sx={{fontWeight: 800, color: '$gray.300', fontSize: '$7'}}>
             SignUp
           </Text>
-          <Text className="text-base font-sans text-gray-300">
+          <Text sx={{fontSize: '$2', color: '$gray.300'}}>
             Fill out your auth credentials and sign up.
           </Text>
           <Spacer height={40} />
@@ -138,13 +90,13 @@ export default function SignUpScreen({navigation}: any) {
                     name={passwordShown ? 'eye' : 'eye-off'}
                     size={16}
                     color={'#AAA'}
+                    style={styles.ml8}
                   />
                 }
               />
             }
           />
           <Spacer height={34} />
-
           <Button
             varient="fill"
             loading={loading}
@@ -153,11 +105,16 @@ export default function SignUpScreen({navigation}: any) {
           </Button>
         </View>
       </View>
-      <Toast
-        shown={toast.shown}
-        message={toast.message}
-        varient={toast.varient}
-      />
     </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  ml8: {
+    marginRight: 8,
+  },
+  wraper: {
+    flex: 1,
+    backgroundColor: Colors.$red[500],
+  },
+});

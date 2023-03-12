@@ -1,18 +1,21 @@
+import {styled, Sx, View} from 'dripsy';
 import React from 'react';
-import {TextInput, TextInputProps, View} from 'react-native';
+import {TextInput as RNTextInput, TextInputProps} from 'react-native';
 import {Colors} from '../Utils';
+
+const TextInput = styled(RNTextInput)();
 
 export interface InputProps extends TextInputProps {
   disabled?: boolean;
   invalid?: boolean;
   rightElement?: React.ReactNode;
   leftElement?: React.ReactNode;
-  containerStyle?: string;
+  containerStyle?: Sx;
 }
 
 export default function Input({
   disabled,
-  invalid,
+  invalid = true,
   rightElement,
   leftElement,
   containerStyle,
@@ -20,32 +23,38 @@ export default function Input({
 }: InputProps) {
   return (
     <View
-      className={`
-            flex
-            flex-row
-            items-center
-            rounded-lg
-            border-bg-500 px-4
-            focus:border-primary-500
-            bg-neutral-800
-            ${invalid && 'border-red-500'}
-            ${disabled && 'bg-bg-300 border-bg-500 opacity-40'}
-            ${containerStyle}
-      `}>
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 14,
+        borderWidth: 3,
+        borderColor: '$neutral.700',
+        backgroundColor: '$neutral.800',
+        // State Styles
+        ...(invalid && {borderColor: '$red.500'}),
+        ...(disabled && {
+          bg: '$neutral.400',
+          borderColor: '$neutral.700',
+          opacity: 0.4,
+        }),
+        ...containerStyle,
+      }}>
       {leftElement && leftElement}
       <TextInput
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect={false}
         editable={!disabled}
-        selectionColor={Colors.primary[600]}
-        placeholderTextColor={Colors.neutral[400]}
-        className={`
-          flex-1
-          font-[Montserrat-Regular]
-          text-white 
-           h-12
-        `}
+        selectionColor={Colors.$green[600]}
+        placeholderTextColor={Colors.$neutral[400]}
+        sx={{
+          flex: 1,
+          color: '$white',
+          height: 48,
+          px: '$3',
+          fontWeight: 700,
+        }}
         {...props}
       />
       {rightElement && rightElement}

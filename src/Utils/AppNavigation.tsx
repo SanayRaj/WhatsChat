@@ -1,13 +1,12 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {Account, Camera, Chat, Users} from '../Screens';
 import AuthenicationStack from '../Screens/Authentication/AuthenticationStack';
+import HomeStack from '../Screens/Home/HomeStack';
 // import {useAuth} from './AuthProvider';
 
 const Stack = createNativeStackNavigator<any>();
-// const Stack = createStackNavigator<any>();
 
 export default function AppNavigation() {
   // const user = useAuth();
@@ -24,6 +23,7 @@ export default function AppNavigation() {
         <Stack.Screen name="Authentication" component={AuthenicationStack} />
         {/* ) : ( */}
         <>
+          <Stack.Screen name="Home" component={HomeStack} />
           <Stack.Screen name="Users" component={Users} />
           <Stack.Screen name="Chat" component={Chat} />
           <Stack.Screen name="Camera" component={Camera} />

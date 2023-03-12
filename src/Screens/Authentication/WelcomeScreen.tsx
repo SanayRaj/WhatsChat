@@ -1,10 +1,10 @@
 import {StatusBar} from 'react-native';
 import React from 'react';
-import Button from '../../Components/Button';
 import {Colors} from '../../Utils';
 import {styled, View} from 'dripsy';
 import {Text as MotiText} from 'moti';
 import {Code} from '@expo/html-elements';
+import {Button, Spacer} from '../../Components/index';
 
 const TitleText = styled(MotiText)({
   color: 'white',
@@ -21,9 +21,8 @@ const WelcomeScreen = ({navigation}: any) => {
         backgroundColor: '$background',
         flex: 1,
         px: '$4',
-        // padding: 100,
       }}>
-      <StatusBar backgroundColor={Colors.black} barStyle="light-content" />
+      <StatusBar backgroundColor={Colors.$black} barStyle="light-content" />
       <View sx={{flex: 1}}>
         <TitleText
           from={{opacity: 0, translateX: -250}}
@@ -57,19 +56,18 @@ const WelcomeScreen = ({navigation}: any) => {
         </TitleText>
       </View>
       <Code />
-      <Button onPress={() => navigation.navigate('SignUp')}>
-        Sign up free
-      </Button>
-      {/*
-      <View className="w-full px-8">
-
-        <Button
-          className="rounded-3xl flex items-center my-2"
-          varient="outline"
-          onPress={() => navigation.navigate('SignIn')}>
-          Log in
+      <View sx={{display: 'flex', flexDirection: 'row'}}>
+        <Button sx={{flex: 1}} onPress={() => navigation.navigate('SignIn')}>
+          Sign In
         </Button>
-      </View> */}
+        <Spacer width={8} />
+        <Button
+          sx={{flex: 1}}
+          varient="outline"
+          onPress={() => navigation.navigate('SignUp')}>
+          Sign Up
+        </Button>
+      </View>
     </View>
   );
 };

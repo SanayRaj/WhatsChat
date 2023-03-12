@@ -1,3 +1,4 @@
+import {Text, View} from 'dripsy';
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {
@@ -5,13 +6,9 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   StatusBar,
-  Text,
-  View,
+  StyleSheet,
 } from 'react-native';
-import Button from '../../Components/Button';
-import IconButton from '../../Components/IconButton';
-import Spacer from '../../Components/Spacer';
-import ValidationInput from '../../Components/ValidationInput';
+import {Button, IconButton, Spacer, ValidationInput} from '../../Components';
 import {Colors, FormRules} from '../../Utils';
 // import {Supabase} from '../../Utils';
 
@@ -23,6 +20,7 @@ export default function SignInScreen({navigation}: any) {
   async function signInWithEmail(value: any) {
     Keyboard.dismiss();
     setLoading(true);
+    return value;
     // signInWithEmailAndPassword(FirebaseAuth, value.email, value.password)
     //   .then((userCredential: {user: any}) => {
     //     console.log('Authentication Success', userCredential.user?.email);
@@ -48,17 +46,30 @@ export default function SignInScreen({navigation}: any) {
   }
 
   useEffect(() => {
-    InteractionManager.addListener('animations', () => {
+    InteractionManager.runAfterInteractions().then(() => {
       setLoaded(true);
+      console.log('Ended');
     });
   }, []);
 
   if (loaded) {
     return (
-      <KeyboardAvoidingView className="flex-1 bg-black">
-        <StatusBar backgroundColor={Colors.black} barStyle="light-content" />
-        <View className="flex-1 mx-auto w-full max-w-xl">
-          <View className="flex justify-center items-start py-3 px-4">
+      <KeyboardAvoidingView style={styles.wraper}>
+        <StatusBar backgroundColor={Colors.$black} barStyle="light-content" />
+        <View
+          sx={{
+            display: 'flex',
+            flex: 1,
+            mx: 'auto',
+            maxWidth: 576,
+            backgroundColor: '$black',
+          }}>
+          <View
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              width: '100%',
+            }}>
             <IconButton
               icon={'chevron-back'}
               color={'white'}
@@ -66,11 +77,12 @@ export default function SignInScreen({navigation}: any) {
               onPress={() => navigation.goBack()}
             />
           </View>
-          <View className="flex flex-1 px-8 justify-center">
-            <Text className="text-4xl font-sansSemiBold text-gray-300">
+          <View
+            sx={{display: 'flex', flex: 1, px: '$3', justifyContent: 'center'}}>
+            <Text sx={{fontWeight: 800, color: '$gray.300', fontSize: '$7'}}>
               SignIn
             </Text>
-            <Text className="text-base font-sans text-gray-300">
+            <Text sx={{fontSize: '$2', color: '$gray.300'}}>
               Fill out your auth credentials and sign in.
             </Text>
             <Spacer height={40} />
@@ -94,19 +106,17 @@ export default function SignInScreen({navigation}: any) {
               rules={FormRules.password}
             />
             <Spacer height={34} />
-
             <Button
               varient="fill"
               loading={loading}
-              className="my-2"
               onPress={handleSubmit(signInWithEmail)}>
               Sign In
             </Button>
+            <Spacer height={6} />
             <Button
-              className="my-2"
               varient="clear"
               disabled={loading}
-              onPress={() => navigation.navigate('ForgotPassword')}>
+              onPress={() => navigation.navigate('Home')}>
               Forgot Password? Reset here
             </Button>
           </View>
@@ -117,3 +127,10 @@ export default function SignInScreen({navigation}: any) {
     return <View />;
   }
 }
+
+const styles = StyleSheet.create({
+  wraper: {
+    flex: 1,
+    backgroundColor: Colors.$red[500],
+  },
+});

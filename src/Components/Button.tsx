@@ -1,13 +1,14 @@
-import {Pressable, SxProp, Text} from 'dripsy';
-import React from 'react';
-import {TouchableOpacityProps} from 'react-native';
+import React, {memo} from 'react';
+import {Pressable, Sx, SxProp, Text} from 'dripsy';
+import {ActivityIndicator, TouchableOpacityProps} from 'react-native';
+import {Colors} from '../Utils';
 
 interface ButtonProps extends TouchableOpacityProps {
   varient?: 'fill' | 'outline' | 'clear';
   children: string;
   loading?: boolean;
   disabled?: boolean;
-  className?: string;
+  sx?: Sx;
   textStyles?: string;
 }
 interface styleType {
@@ -16,16 +17,20 @@ interface styleType {
   clear: SxProp;
 }
 
-// const DripsyButton = styled(TouchableOpacity)((props: {success: boolean}) => ({
-//   color: props.success ? 'success' : 'rgb(22 163 74)',
-// }));
-
-export default function Button({
+function Button({
   children,
-  varient = 'outline',
+  varient = 'fill',
   disabled,
   loading,
+  sx,
+  ...props
 }: ButtonProps) {
+  // const inputVarientDisabledStyles: styleType = {
+  //   fill: ' border opacity-90 bg-green-600 border-green-700',
+  //   outline: 'bg-neutral-800 opacity-70',
+  //   clear: 'opacity-50 bg-neutral-800 py-3',
+  // };
+
   const inputVarientStyles: styleType = {
     fill: {
       backgroundColor: '$primary.600',
@@ -37,11 +42,6 @@ export default function Button({
     },
     clear: {},
   };
-  // const inputVarientDisabledStyles: styleType = {
-  //   fill: ' border opacity-90 bg-green-600 border-green-700',
-  //   outline: 'bg-neutral-800 opacity-70',
-  //   clear: 'opacity-50 bg-neutral-800 py-3',
-  // };
 
   const inputVarientTextStyles: styleType = {
     fill: {color: '#000'},
@@ -49,30 +49,10 @@ export default function Button({
     clear: {color: '#FFF'},
   };
 
-  // return (
-  //   <TouchableOpacity
-  //     activeOpacity={0.8}
-  //     accessibilityRole="button"
-  //     accessibilityLabel={children}
-  //     disabled={loading || disabled}
-  //     className={`px-5 py-3 flex items-center  rounded-3xl active:scale-[0.98] transition-all ${
-  //       inputVarientStyles[varient]
-  //     } ${
-  //       (loading || disabled) && inputVarientDisabledStyles[varient]
-  //     } ${className}`}
-  //     {...props}>
-  //     {loading && varient == 'fill' ? (
-  //       <ActivityIndicator color={Colors.black} />
-  //     ) : (
-  //       <Text
-  //         className={`font-sansMedium text-sm  ${inputVarientTextStyles[varient]} ${textStyles}`}>
-  //         {children}
-  //       </Text>
-  //     )}
-  //   </TouchableOpacity>
-  // );
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={children}
       sx={{
         borderWidth: 3,
         display: 'flex',
@@ -81,16 +61,24 @@ export default function Button({
         padding: '$3',
         borderRadius: 20,
         ...inputVarientStyles[varient],
+        ...sx,
       }}
+      {...props}
       disabled={loading || disabled}>
-      <Text
-        sx={{
-          fontWeight: '700',
-          fontSize: '$1',
-          ...inputVarientTextStyles[varient],
-        }}>
-        {children}
-      </Text>
+      {loading && varient === 'fill' ? (
+        <ActivityIndicator color={Colors.$black} />
+      ) : (
+        <Text
+          sx={{
+            fontWeight: '700',
+            fontSize: '$1',
+            ...inputVarientTextStyles[varient],
+          }}>
+          {children}
+        </Text>
+      )}
     </Pressable>
   );
 }
+
+export default memo((props: ButtonProps) => Button(props));

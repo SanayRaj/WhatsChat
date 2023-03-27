@@ -1,8 +1,8 @@
 import React from 'react';
 import {DripsyProvider} from 'dripsy';
 import AuthProvider from './src/Utils/AuthProvider';
-import AppNavigation from './src/Utils/AppNavigation';
-import Theme from './src/Utils/theme';
+import AppNavigation from './src/Screens/AppNavigation';
+import Theme from './src/Utils/AppTheme';
 
 function App() {
   return (

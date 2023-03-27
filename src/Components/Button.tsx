@@ -11,27 +11,19 @@ interface ButtonProps extends TouchableOpacityProps {
   sx?: Sx;
   textStyles?: string;
 }
-interface styleType {
-  fill: SxProp;
-  outline: SxProp;
-  clear: SxProp;
+interface StylesType {
+  [x: string]: SxProp;
 }
 
-function Button({
+const Button: React.FC<ButtonProps> = ({
   children,
   varient = 'fill',
   disabled,
   loading,
   sx,
   ...props
-}: ButtonProps) {
-  // const inputVarientDisabledStyles: styleType = {
-  //   fill: ' border opacity-90 bg-green-600 border-green-700',
-  //   outline: 'bg-neutral-800 opacity-70',
-  //   clear: 'opacity-50 bg-neutral-800 py-3',
-  // };
-
-  const inputVarientStyles: styleType = {
+}) => {
+  const inputVarientStyles: StylesType = {
     fill: {
       backgroundColor: '$primary.600',
       borderColor: '$primary.600',
@@ -40,10 +32,9 @@ function Button({
       borderColor: '$primary.600',
       backgroundColor: 'transparent',
     },
-    clear: {},
   };
 
-  const inputVarientTextStyles: styleType = {
+  const inputVarientTextStyles: StylesType = {
     fill: {color: '#000'},
     outline: {color: '#CCC'},
     clear: {color: '#FFF'},
@@ -79,6 +70,6 @@ function Button({
       )}
     </Pressable>
   );
-}
+};
 
-export default memo((props: ButtonProps) => Button(props));
+export default memo(Button);

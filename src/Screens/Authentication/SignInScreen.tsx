@@ -1,136 +1,88 @@
-import {Text, View} from 'dripsy';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useForm} from 'react-hook-form';
+import {Keyboard} from 'react-native';
 import {
-  InteractionManager,
-  Keyboard,
-  KeyboardAvoidingView,
-  StatusBar,
-  StyleSheet,
-} from 'react-native';
-import {Button, IconButton, Spacer, ValidationInput} from '../../Components';
-import {Colors, FormRules} from '../../Utils';
-// import {Supabase} from '../../Utils';
+  AuthScreenTemplate,
+  Button,
+  Spacer,
+  ValidationInput,
+} from '../../Components';
+import {FormRules} from '../../Utils';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {AuthStackNavigationParms} from './AuthenticationStack';
+import useFetchState from '../../Utils/hooks/useFetchState';
+import {SupabaseClient} from '../../Utils/supabase.config';
 
-export default function SignInScreen({navigation}: any) {
-  const [loading, setLoading] = useState<boolean>(false);
+type Props = {
+  navigation: StackNavigationProp<AuthStackNavigationParms, 'SignIn'>;
+};
+
+const SignInScreen: React.FC<Props> = ({navigation}) => {
   const {control, handleSubmit} = useForm();
-  const [loaded, setLoaded] = useState(false);
+  const [fetchState, dispatch] = useFetchState();
 
-  async function signInWithEmail(value: any) {
+  console.log(fetchState);
+
+  async function signInWithEmail(_value: any) {
     Keyboard.dismiss();
-    setLoading(true);
-    return value;
-    // signInWithEmailAndPassword(FirebaseAuth, value.email, value.password)
-    //   .then((userCredential: {user: any}) => {
-    //     console.log('Authentication Success', userCredential.user?.email);
-    //     // setToast({
-    //     //   varient: 'success',
-    //     //   shown: true,
-    //     //   message: 'SignUp Success, Check your Inbox for Email verification',
-    //     // });
-    //   })
-    //   .catch((error: {code: any; message: any}) => {
-    //     console.log('Auth Error:', error.message);
-    //     // setToast({
-    //     //   varient: 'error',
-    //     //   shown: true,
-    //     //   message: error?.message
-    //     //     ? `Error: ${error.message}`
-    //     //     : 'Oops... Something Went wrong',
-    //     // });
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+    dispatch({type: 'FETCH_START'});
+    // Handle Supabase Authentication
+    SupabaseClient.auth
+      .signInWithPassword({
+        email: _value.email,
+        password: _value.password,
+      })
+      .then(data => {
+        console.log('Success:', data);
+        dispatch({type: 'FETCH_SUCCESS', payload: data.data});
+      })
+      .catch(error => {
+        console.log('Error:', error);
+        dispatch({type: 'FETCH_ERROR', payload: error.message});
+      });
   }
+  return (
+    <AuthScreenTemplate
+      title="SignIn"
+      subtitle="Fill out your auth credentials and sign in."
+      goBack={navigation.goBack}>
+      <>
+        <ValidationInput
+          placeholder="Email"
+          disabled={fetchState.loading}
+          keyboardType="email-address"
+          //react-hook-form
+          control={control}
+          name="email"
+          rules={FormRules.email}
+        />
+        <Spacer height={8} />
+        <ValidationInput
+          secureTextEntry={true}
+          placeholder="Password"
+          disabled={fetchState.loading}
+          //react-hook-form
+          control={control}
+          name="password"
+          rules={FormRules.password}
+        />
+        <Spacer height={34} />
+        <Button
+          varient="fill"
+          loading={fetchState.loading}
+          onPress={handleSubmit(signInWithEmail)}>
+          Sign In
+        </Button>
+        <Spacer height={6} />
+        <Button
+          varient="clear"
+          disabled={fetchState.loading}
+          onPress={() => navigation.navigate('ForgotPassword')}>
+          Forgot Password? Reset here
+        </Button>
+      </>
+    </AuthScreenTemplate>
+  );
+};
 
-  useEffect(() => {
-    InteractionManager.runAfterInteractions().then(() => {
-      setLoaded(true);
-      console.log('Ended');
-    });
-  }, []);
-
-  if (loaded) {
-    return (
-      <KeyboardAvoidingView style={styles.wraper}>
-        <StatusBar backgroundColor={Colors.$black} barStyle="light-content" />
-        <View
-          sx={{
-            display: 'flex',
-            flex: 1,
-            mx: 'auto',
-            maxWidth: 576,
-            backgroundColor: '$black',
-          }}>
-          <View
-            sx={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              width: '100%',
-            }}>
-            <IconButton
-              icon={'chevron-back'}
-              color={'white'}
-              size={28}
-              onPress={() => navigation.goBack()}
-            />
-          </View>
-          <View
-            sx={{display: 'flex', flex: 1, px: '$3', justifyContent: 'center'}}>
-            <Text sx={{fontWeight: 800, color: '$gray.300', fontSize: '$7'}}>
-              SignIn
-            </Text>
-            <Text sx={{fontSize: '$2', color: '$gray.300'}}>
-              Fill out your auth credentials and sign in.
-            </Text>
-            <Spacer height={40} />
-            <ValidationInput
-              placeholder="Email"
-              disabled={loading}
-              keyboardType="email-address"
-              //react-hook-form
-              control={control}
-              name="email"
-              rules={FormRules.email}
-            />
-            <Spacer height={8} />
-            <ValidationInput
-              secureTextEntry={true}
-              placeholder="Password"
-              disabled={loading}
-              //react-hook-form
-              control={control}
-              name="password"
-              rules={FormRules.password}
-            />
-            <Spacer height={34} />
-            <Button
-              varient="fill"
-              loading={loading}
-              onPress={handleSubmit(signInWithEmail)}>
-              Sign In
-            </Button>
-            <Spacer height={6} />
-            <Button
-              varient="clear"
-              disabled={loading}
-              onPress={() => navigation.navigate('Home')}>
-              Forgot Password? Reset here
-            </Button>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
-    );
-  } else {
-    return <View />;
-  }
-}
-
-const styles = StyleSheet.create({
-  wraper: {
-    flex: 1,
-    backgroundColor: Colors.$red[500],
-  },
-});
+export default SignInScreen;

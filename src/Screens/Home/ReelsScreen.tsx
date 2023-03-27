@@ -1,7 +1,8 @@
 import {FlatList, Text, View} from 'dripsy';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions} from 'react-native';
-import {Avatar, IconButton} from '../../Components';
+import {IconButton} from '../../Components';
+import {SupabaseClient} from '../../Utils/supabase.config';
 
 const {height} = Dimensions.get('screen');
 
@@ -22,10 +23,10 @@ const ReelItem = () => {
           m: '$3',
         }}>
         <View sx={{flexDirection: 'row', alignItems: 'center'}}>
-          <Avatar
+          {/* <Avatar
             size={40}
             source={require('../../../assets/images/avatars/cat.png')}
-          />
+          /> */}
           <Text
             sx={{fontWeight: 600, color: '$white', fontSize: '$2', ml: '$2'}}>
             This Goes to be title
@@ -49,10 +50,10 @@ const ReelItem = () => {
             This Is Sub title #react #snap #wats chatasd This Is Sub title
             #react #snap #wats chat
           </Text>
-          <Avatar
+          {/* <Avatar
             size={36}
             source={require('../../../assets/images/avatars/cat.png')}
-          />
+          /> */}
         </View>
       </View>
     </View>
@@ -60,6 +61,23 @@ const ReelItem = () => {
 };
 
 export default function ReelsScreen() {
+  const [reels, setReels] = useState<any>({});
+
+  const fetchReels = () => {
+    SupabaseClient.from('reels')
+      .select('*')
+      .then(responce => {
+        if (responce.error) {
+          console.log('Reels Fetching faild:', responce.error.message);
+          return false;
+        }
+        setReels(responce?.data);
+      });
+  };
+  useEffect(() => {
+    fetchReels();
+  }, []);
+
   return (
     <View sx={{flex: 1, bg: '$black'}}>
       <View
@@ -73,7 +91,7 @@ export default function ReelsScreen() {
       <FlatList
         showsVerticalScrollIndicator={false}
         pagingEnabled
-        data={[0, 1, 2, 3, 4, 5, 6]}
+        data={reels}
         renderItem={() => <ReelItem />}
       />
     </View>

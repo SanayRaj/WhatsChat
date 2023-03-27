@@ -6,9 +6,11 @@ import Message from './Message';
 import SnackAlert from './SnackAlert';
 import Spacer from './Spacer';
 import ValidationInput from './ValidationInput';
+import AuthScreenTemplate from './AuthScreenTemplate';
 
 export {
   Avatar,
+  AuthScreenTemplate,
   Button,
   IconButton,
   Input,

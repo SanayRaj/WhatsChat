@@ -1,5 +1,7 @@
 # DataBase Structure
 
+this.PasswordIs(NotStrong)
+
 ## User
 
 <li>id: uuid</li>

@@ -5,19 +5,16 @@ import SignInScreen from './SignInScreen';
 import SignUpScreen from './SignUpScreen';
 import WelcomeScreen from './WelcomeScreen';
 
-const AuthStack = createNativeStackNavigator();
+export type AuthStackNavigationParms = {
+  Welcome: undefined;
+  SignIn: undefined;
+  SignUp: undefined;
+  ForgotPassword?: {
+    email: string | undefined;
+  };
+};
 
-// const config: TransitionSpec = {
-//   animation: 'spring',
-//   config: {
-//     stiffness: 1000,
-//     damping: 500,
-//     mass: 3,
-//     overshootClamping: true,
-//     restDisplacementThreshold: 0.01,
-//     restSpeedThreshold: 0.01,
-//   },
-// };
+const AuthStack = createNativeStackNavigator<AuthStackNavigationParms>();
 
 export default function AuthenicationStack() {
   return (

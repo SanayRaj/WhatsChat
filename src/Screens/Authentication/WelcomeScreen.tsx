@@ -5,6 +5,8 @@ import {styled, View} from 'dripsy';
 import {Text as MotiText} from 'moti';
 import {Code} from '@expo/html-elements';
 import {Button, Spacer} from '../../Components/index';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {AuthStackNavigationParms} from './AuthenticationStack';
 
 const TitleText = styled(MotiText)({
   color: 'white',
@@ -13,7 +15,11 @@ const TitleText = styled(MotiText)({
   padding: 0,
 });
 
-const WelcomeScreen = ({navigation}: any) => {
+type Props = {
+  navigation: StackNavigationProp<AuthStackNavigationParms, 'Welcome'>;
+};
+
+const WelcomeScreen: React.FC<Props> = ({navigation}) => {
   return (
     <View
       sx={{

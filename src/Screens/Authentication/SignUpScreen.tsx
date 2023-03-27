@@ -1,120 +1,118 @@
-import {Text, View} from 'dripsy';
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
+import {Keyboard, StyleSheet, ToastAndroid} from 'react-native';
 import {
-  Keyboard,
-  KeyboardAvoidingView,
-  StatusBar,
-  StyleSheet,
-} from 'react-native';
-import {Button, IconButton, Spacer, ValidationInput} from '../../Components';
-import {Colors, FormRules} from '../../Utils';
+  AuthScreenTemplate,
+  Button,
+  IconButton,
+  Spacer,
+  ValidationInput,
+} from '../../Components';
+import {FormRules} from '../../Utils';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {AuthStackNavigationParms} from './AuthenticationStack';
+import {SupabaseClient} from '../../Utils/supabase.config';
+import useFetchState from '../../Utils/hooks/useFetchState';
 
-export default function SignUpScreen({navigation}: any) {
-  const [passwordShown, setPasswordShown] = useState(false);
+type Props = {
+  navigation: StackNavigationProp<AuthStackNavigationParms, 'SignUp'>;
+};
+
+const SignUpScreen: React.FC<Props> = ({navigation}) => {
+  const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const {handleSubmit, control} = useForm();
-  const [loading, setLoading] = useState(false);
+  const [fetchState, dispatch] = useFetchState();
 
-  async function signUpWithEmail(value: any) {
+  async function signUpWithEmail(_value: any) {
     Keyboard.dismiss();
-    setLoading(true);
-    return value;
+    dispatch({type: 'FETCH_START'});
+    // Handle Supabase Authentication
+    SupabaseClient.auth
+      .signUp({
+        email: _value.email,
+        password: _value.password,
+        options: {
+          data: {
+            username: _value.username,
+          },
+        },
+      })
+      .then(data => {
+        console.log('Success:', data);
+        dispatch({type: 'FETCH_SUCCESS', payload: data.data});
+        ToastAndroid.show('Success', ToastAndroid.SHORT);
+      })
+      .catch(error => {
+        console.log('Error:', error);
+        dispatch({type: 'FETCH_ERROR', payload: error.message});
+        ToastAndroid.show(`Error: ${error?.message}`, ToastAndroid.SHORT);
+      });
   }
 
   return (
-    <KeyboardAvoidingView style={styles.wraper}>
-      <StatusBar backgroundColor={Colors.$black} barStyle="light-content" />
-      <View
-        sx={{
-          display: 'flex',
-          flex: 1,
-          mx: 'auto',
-          maxWidth: 576,
-          backgroundColor: '$black',
-        }}>
-        <View
-          sx={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            width: '100%',
-          }}>
-          <IconButton
-            icon={'chevron-back'}
-            color={'white'}
-            size={28}
-            onPress={() => navigation.goBack()}
-          />
-        </View>
-        <View
-          sx={{display: 'flex', flex: 1, px: '$3', justifyContent: 'center'}}>
-          <Text sx={{fontWeight: 800, color: '$gray.300', fontSize: '$7'}}>
-            SignUp
-          </Text>
-          <Text sx={{fontSize: '$2', color: '$gray.300'}}>
-            Fill out your auth credentials and sign up.
-          </Text>
-          <Spacer height={40} />
-          <ValidationInput
-            placeholder="Username"
-            keyboardType="default"
-            disabled={loading}
-            //react-hook-form
-            name="username"
-            control={control}
-            rules={FormRules.username}
-          />
-          <Spacer height={8} />
-          <ValidationInput
-            placeholder="Email"
-            keyboardType="email-address"
-            disabled={loading}
-            //react-hook-form
-            name="email"
-            control={control}
-            rules={FormRules.email}
-          />
-          <Spacer height={8} />
-          <ValidationInput
-            secureTextEntry={passwordShown}
-            placeholder="Password"
-            disabled={loading}
-            control={control}
-            name="password"
-            rules={FormRules.password}
-            rightElement={
-              <IconButton
-                onPress={() => setPasswordShown(!passwordShown)}
-                icon={
-                  <FeatherIcon
-                    name={passwordShown ? 'eye' : 'eye-off'}
-                    size={16}
-                    color={'#AAA'}
-                    style={styles.ml8}
-                  />
-                }
-              />
-            }
-          />
-          <Spacer height={34} />
-          <Button
-            varient="fill"
-            loading={loading}
-            onPress={handleSubmit(signUpWithEmail)}>
-            SignUp
-          </Button>
-        </View>
-      </View>
-    </KeyboardAvoidingView>
+    <AuthScreenTemplate
+      title="SignUp"
+      subtitle="Fill out your auth credentials and sign up."
+      goBack={navigation.goBack}>
+      <>
+        <ValidationInput
+          placeholder="Username"
+          keyboardType="default"
+          disabled={fetchState.loading}
+          //react-hook-form
+          name="username"
+          control={control}
+          rules={FormRules.username}
+        />
+        <Spacer height={8} />
+        <ValidationInput
+          placeholder="Email"
+          keyboardType="email-address"
+          disabled={fetchState.loading}
+          //react-hook-form
+          name="email"
+          control={control}
+          rules={FormRules.email}
+        />
+        <Spacer height={8} />
+        <ValidationInput
+          secureTextEntry={passwordShown}
+          placeholder="Password"
+          disabled={fetchState.loading}
+          control={control}
+          name="password"
+          rules={FormRules.password}
+          rightElement={
+            <IconButton
+              onPress={() => setPasswordShown(!passwordShown)}
+              icon={
+                <FeatherIcon
+                  name={passwordShown ? 'eye' : 'eye-off'}
+                  size={16}
+                  color={'#AAA'}
+                  style={styles.mr8}
+                />
+              }
+            />
+          }
+        />
+        <Spacer height={34} />
+        <Button
+          varient="fill"
+          loading={fetchState.loading}
+          onPress={handleSubmit(signUpWithEmail)}>
+          SignUp
+        </Button>
+      </>
+    </AuthScreenTemplate>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  ml8: {
+  mr8: {
     marginRight: 8,
   },
-  wraper: {
-    flex: 1,
-    backgroundColor: Colors.$red[500],
-  },
 });
+
+export default SignUpScreen;

@@ -1,6 +1,5 @@
-import Fonts from './fonts';
 import Colors from './colors';
-import {Data, UsersData} from './data';
 import FormRules from './formRules';
+import AppTheme, {Fonts} from './AppTheme';
 
-export {Fonts, Colors, Data, UsersData, FormRules};
+export {AppTheme, Fonts, Colors, FormRules};

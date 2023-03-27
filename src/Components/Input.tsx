@@ -1,5 +1,5 @@
 import {styled, Sx, View} from 'dripsy';
-import React from 'react';
+import React, {memo} from 'react';
 import {TextInput as RNTextInput, TextInputProps} from 'react-native';
 import {Colors} from '../Utils';
 
@@ -13,9 +13,9 @@ export interface InputProps extends TextInputProps {
   containerStyle?: Sx;
 }
 
-export default function Input({
+function Input({
   disabled,
-  invalid = true,
+  invalid = false,
   rightElement,
   leftElement,
   containerStyle,
@@ -32,7 +32,7 @@ export default function Input({
         borderColor: '$neutral.700',
         backgroundColor: '$neutral.800',
         // State Styles
-        ...(invalid && {borderColor: '$red.500'}),
+        ...(invalid && {borderColor: '$red.400'}),
         ...(disabled && {
           bg: '$neutral.400',
           borderColor: '$neutral.700',
@@ -64,3 +64,5 @@ export default function Input({
 
 //sanju.p7306@gmail.com
 //pass.word
+
+export default memo(Input);

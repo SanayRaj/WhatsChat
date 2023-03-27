@@ -1,146 +1,53 @@
-import {useState, useEffect} from 'react';
-import {StyleSheet, View, Alert, Image, ActivityIndicator} from 'react-native';
-import {Colors, Supabase} from '../Utils';
+import React from 'react';
 import Button from '../Components/Button';
-import {useAuth} from '../Utils/AuthProvider';
 import Input from '../Components/Input';
 import Spacer from '../Components/Spacer';
+import {View} from 'dripsy';
+import useFetchState from '../Utils/hooks/useFetchState';
 
-const avatar = require('../../assets/images/avatars/cat.png');
+export default function AccountScreen() {
+  const [state, dispatch] = useFetchState();
 
-export default function AccountScreen({navigation}: {navigation: any}) {
-  const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState('');
-
-  const session = useAuth();
-
-  useEffect(() => {
-    if (session) {
-      getProfile();
-    }
-  }, [session]);
-
-  async function getProfile() {
-    try {
-      setLoading(true);
-      if (!session?.user) {
-        // navigation.navigate('SignIn')
-        throw new Error('No user on the session!');
-        return;
-      }
-
-      let {data, error, status} = await Supabase.from('profiles')
-        .select('username, email, avatar_url')
-        .eq('id', session?.user.id)
-        .single();
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        setUsername(data.username);
-        setEmail(data.email);
-        setAvatarUrl(data.avatar_url);
-        console.log(data);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function updateProfile({
-    username,
-    email,
-    avatar_url,
-  }: {
-    username: string;
-    email: string;
-    avatar_url: string;
-  }) {
-    try {
-      setLoading(true);
-      if (!session?.user) {
-        throw new Error('No user on the session!');
-      }
-
-      const updates = {
-        id: session?.user.id,
-        username,
-        email,
-        avatar_url,
-        updated_at: new Date(),
-      };
-
-      let {error} = await Supabase.from('profiles').upsert(updates);
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
+  const updateProfile = () => {};
 
   return (
-    <>
-      <View className="bg-black flex flex-1 px-8 justify-center">
-        <View className="rounded-full flex items-center">
-          <Image source={avatar} className="w-28 h-28 rounded-full" />
-        </View>
-        <Spacer height={40} />
-        <Input
-          placeholder="Email"
-          value={session?.user?.email}
-          disabled={true}
-        />
-        <Spacer height={8} />
-        <Input
-          placeholder="Username"
-          value={username || ''}
-          onChangeText={text => setUsername(text)}
-        />
-        <Spacer height={8} />
-        <Input
-          placeholder="Website"
-          value={email || ''}
-          onChangeText={text => setEmail(text)}
-        />
-        <Spacer height={34} />
-
-        <Button
-          className="my-2"
-          disabled={loading}
-          children="Sign Out"
-          onPress={() => Supabase.auth.signOut()}
-        />
-
-        <Button
-          className="my-2"
-          children={loading ? 'Loading ...' : 'Update'}
-          onPress={() =>
-            updateProfile({username, email, avatar_url: avatarUrl})
-          }
-          disabled={loading}
-          varient="clear"
-        />
+    <View
+      sx={{
+        backgroundColor: '$black',
+        flex: 1,
+        justifyContent: 'center',
+        px: '$4',
+      }}>
+      <View sx={{borderRadius: 100, overflow: 'hidden', alignItems: 'center'}}>
+        {/* <Image
+          source={avatar}
+          sx={{width: 112, height: 112, borderRadius: 100}}
+        /> */}
       </View>
-      {loading && (
-        <View
-          style={StyleSheet.absoluteFill}
-          className="bg-black bg-opacity-10 opacity-60 flex items-center justify-center">
-          <ActivityIndicator size={50} color={Colors.primary[500]} />
-        </View>
-      )}
-    </>
+      <Spacer height={40} />
+      <Input
+        placeholder="Email"
+        value={'sanaysspace.15@gmail.com'}
+        disabled={true}
+      />
+      <Spacer height={8} />
+      <Input
+        placeholder="Username"
+        value={state?.data?.username || ''}
+        onChangeText={text => setUsername(text)}
+      />
+      <Spacer height={8} />
+      <Input
+        placeholder="Website"
+        value={email || ''}
+        onChangeText={text => setEmail(text)}
+      />
+      <Spacer height={34} />
+      <Button onPress={() => updateProfile()} loading={loading}>
+        Update
+      </Button>
+
+      <Button disabled={loading} children="Sign Out" varient="clear" />
+    </View>
   );
 }

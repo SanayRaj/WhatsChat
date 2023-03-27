@@ -1,5 +1,5 @@
 import {Text, View} from 'dripsy';
-import React from 'react';
+import React, {memo} from 'react';
 import {
   Control,
   Controller,
@@ -17,12 +17,12 @@ interface ValidationInputProps extends InputProps {
   >;
 }
 
-export default function ValidationInput({
+const ValidationInput: React.FC<ValidationInputProps> = ({
   control,
   name,
   rules = {},
   ...props
-}: ValidationInputProps) {
+}) => {
   return (
     <Controller
       control={control}
@@ -46,4 +46,6 @@ export default function ValidationInput({
       )}
     />
   );
-}
+};
+
+export default memo(ValidationInput);

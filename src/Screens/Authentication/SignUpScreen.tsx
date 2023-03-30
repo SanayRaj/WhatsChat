@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {Keyboard, StyleSheet, ToastAndroid} from 'react-native';
+import {Keyboard, StyleSheet} from 'react-native';
 import {
   AuthScreenTemplate,
   Button,
@@ -28,26 +28,22 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
     Keyboard.dismiss();
     dispatch({type: 'FETCH_START'});
     // Handle Supabase Authentication
-    SupabaseClient.auth
-      .signUp({
-        email: _value.email,
-        password: _value.password,
-        options: {
-          data: {
-            username: _value.username,
-          },
+    const {error, data} = await SupabaseClient.auth.signUp({
+      email: _value.email,
+      password: _value.password,
+      options: {
+        data: {
+          username: _value.username,
         },
-      })
-      .then(data => {
-        console.log('Success:', data);
-        dispatch({type: 'FETCH_SUCCESS', payload: data.data});
-        ToastAndroid.show('Success', ToastAndroid.SHORT);
-      })
-      .catch(error => {
-        console.log('Error:', error);
-        dispatch({type: 'FETCH_ERROR', payload: error.message});
-        ToastAndroid.show(`Error: ${error?.message}`, ToastAndroid.SHORT);
-      });
+      },
+    });
+    if (error) {
+      console.log('Error:', error);
+      dispatch({type: 'FETCH_ERROR', payload: error.message});
+    } else {
+      console.log('Success, User is', data);
+      dispatch({type: 'FETCH_SUCCESS'});
+    }
   }
 
   return (

@@ -17,10 +17,7 @@ export type AppStackNavigationParms = {
 const Stack = createNativeStackNavigator<AppStackNavigationParms>();
 
 export default function AppNavigation() {
-  const {token} = useAuth();
-
-  // console.log(user);
-
+  const {appSession} = useAuth();
   return (
     <>
       <NavigationContainer>
@@ -29,7 +26,7 @@ export default function AppNavigation() {
             headerShown: false,
             animation: 'slide_from_left',
           }}>
-          {token == null ? (
+          {!appSession?.user ? (
             <Stack.Screen
               name="Authentication"
               component={AuthenicationStack}

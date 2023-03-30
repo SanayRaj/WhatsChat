@@ -2,7 +2,7 @@ import {useReducer} from 'react';
 
 type FetchReducerActionsType =
   | {type: 'FETCH_START'}
-  | {type: 'FETCH_SUCCESS'; payload: object | string | undefined}
+  | {type: 'FETCH_SUCCESS'; payload?: object | string | undefined}
   | {type: 'FETCH_ERROR'; payload: object | string | undefined};
 
 interface StateType {

@@ -27,19 +27,17 @@ const SignInScreen: React.FC<Props> = ({navigation}) => {
     Keyboard.dismiss();
     dispatch({type: 'FETCH_START'});
     // Handle Supabase Authentication
-    SupabaseClient.auth
-      .signInWithPassword({
-        email: _value.email,
-        password: _value.password,
-      })
-      .then(data => {
-        console.log('Success:', data);
-        dispatch({type: 'FETCH_SUCCESS', payload: data.data});
-      })
-      .catch(error => {
-        console.log('Error:', error);
-        dispatch({type: 'FETCH_ERROR', payload: error.message});
-      });
+    const {error} = await SupabaseClient.auth.signInWithPassword({
+      email: _value.email,
+      password: _value.password,
+    });
+    if (error) {
+      console.log('Error:', error);
+      dispatch({type: 'FETCH_ERROR', payload: error.message});
+    } else {
+      console.log('Success:');
+      dispatch({type: 'FETCH_SUCCESS'});
+    }
   }
   return (
     <AuthScreenTemplate

@@ -1,32 +1,29 @@
-import React, {useContext, useEffect} from 'react';
+import {Session} from '@supabase/supabase-js';
+import React, {useContext, useEffect, useState} from 'react';
 import SplashScreen from 'react-native-splash-screen';
-
-export type User = {
-  uid: any;
-  username: string;
-  avatar_url: string;
-  is_online: boolean;
-};
+import {SupabaseClient} from './supabase.config';
 
 export const AuthContext = React.createContext({});
 
-export const useAuth: any = () => {
-  const context = useContext(AuthContext);
-  return context;
-};
+export const useAuth: any = () => useContext(AuthContext);
 
-export default function AuthProvider({
-  children,
-}: {
-  children: React.ReactElement;
-}) {
+const AuthProvider: React.FC<{children: JSX.Element}> = ({children}) => {
+  const [appSession, setAppSession] = useState<Session | null>(null);
+
   useEffect(() => {
+    SupabaseClient.auth
+      .getSession()
+      .then(({data: {session}}) => setAppSession(session));
+
+    SupabaseClient.auth.onAuthStateChange((_event, session) =>
+      setAppSession(session)
+    );
     SplashScreen.hide();
   }, []);
 
   return (
-    <AuthContext.Provider value={{name: 'sanay'}}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{appSession}}>{children}</AuthContext.Provider>
   );
-}
+};
+
+export default AuthProvider;

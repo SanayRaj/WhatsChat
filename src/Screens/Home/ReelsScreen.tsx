@@ -2,7 +2,7 @@ import {FlatList, Text, View} from 'dripsy';
 import React, {useEffect, useState} from 'react';
 import {Dimensions} from 'react-native';
 import {IconButton} from '../../Components';
-import {SupabaseClient} from '../../Utils/supabase.config';
+import {Supabase} from '../../Utils/supabase.config';
 
 const {height} = Dimensions.get('screen');
 
@@ -64,7 +64,7 @@ export default function ReelsScreen() {
   const [reels, setReels] = useState<any>({});
 
   const fetchReels = () => {
-    SupabaseClient.from('reels')
+    Supabase.from('reels')
       .select('*')
       .then(responce => {
         if (responce.error) {

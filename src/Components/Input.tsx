@@ -28,7 +28,7 @@ function Input({
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 14,
-        borderWidth: 3,
+        borderWidth: 2,
         borderColor: '$neutral.700',
         backgroundColor: '$neutral.800',
         // State Styles

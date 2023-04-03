@@ -12,7 +12,7 @@ import {FormRules} from '../../Utils';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {AuthStackNavigationParms} from './AuthenticationStack';
-import {SupabaseClient} from '../../Utils/supabase.config';
+import {Supabase} from '../../Utils/supabase.config';
 import useFetchState from '../../Utils/hooks/useFetchState';
 
 type Props = {
@@ -28,7 +28,7 @@ const SignUpScreen: React.FC<Props> = ({navigation}) => {
     Keyboard.dismiss();
     dispatch({type: 'FETCH_START'});
     // Handle Supabase Authentication
-    const {error, data} = await SupabaseClient.auth.signUp({
+    const {error, data} = await Supabase.auth.signUp({
       email: _value.email,
       password: _value.password,
       options: {

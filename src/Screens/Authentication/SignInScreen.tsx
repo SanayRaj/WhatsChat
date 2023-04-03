@@ -11,7 +11,7 @@ import {FormRules} from '../../Utils';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {AuthStackNavigationParms} from './AuthenticationStack';
 import useFetchState from '../../Utils/hooks/useFetchState';
-import {SupabaseClient} from '../../Utils/supabase.config';
+import {Supabase} from '../../Utils/supabase.config';
 
 type Props = {
   navigation: StackNavigationProp<AuthStackNavigationParms, 'SignIn'>;
@@ -27,7 +27,7 @@ const SignInScreen: React.FC<Props> = ({navigation}) => {
     Keyboard.dismiss();
     dispatch({type: 'FETCH_START'});
     // Handle Supabase Authentication
-    const {error} = await SupabaseClient.auth.signInWithPassword({
+    const {error} = await Supabase.auth.signInWithPassword({
       email: _value.email,
       password: _value.password,
     });

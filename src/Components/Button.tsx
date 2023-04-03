@@ -45,7 +45,7 @@ const Button: React.FC<ButtonProps> = ({
       accessibilityRole="button"
       accessibilityLabel={children}
       sx={{
-        borderWidth: 3,
+        borderWidth: 2,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

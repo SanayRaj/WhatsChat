@@ -1,30 +1,49 @@
-# DataBase Structure
+# WhatsChat
 
-this.PasswordIs(NotStrong)
+WhatsChat is simple social-media mobile app build wit [ReactNative](https://reactnative.dev/) and [Supabase](https://supabase.com).
 
-## User
+- Styled with [Dripsy](https://dripsy.xyz).
+- Animations with [Moti](https://moti.com).
 
-<li>id: uuid</li>
-<li>avatarURL: text</li>
-<li>username: text</li>
-<li>email: text</li>
-<li>isOnline: boolean</li>
+### Features
 
-## ChatRoom
+- SignIn/SingUp.
+- Short Video.
+- Posts.
+- Realtime Chat.
 
-<li>id: text</li>
-<li>user1: text</li>
-<li>user2: text</li>
-<li>messages: Array< Messages > </li>
+### To-Do
 
-# Username
+- [x] Short Video (Need to optimize video loading).
+- [ ] Posts
+- [ ] Private Real-Time Chat.
+- [ ] Better Caching with Offline Support.
+- [ ] Optimize app size.
+- [ ] IOS Support.
 
-_kannans_
+## Installation
 
-# Email
+Install dependencies -
 
-sanaysspace.15@gmail.com
+```sh
+yarn
+or
+npm install
+```
 
-# Password
+Setup Supabase Project and configure [`supabase.config.js`](src/Utils/supabase.config.js)
 
-pass.kannappie
+```JS
+const supabaseUrl = '<REPLACE_WITH_YOURS_URL>';
+const supabaseAnonKey = '<REPLACE_WITH_YOURS_ANNON_KEY>';
+```
+
+Run your Application.
+
+> Make sure a physical device is connected & detected in `adb` OR emulator is installed.
+
+```sh
+yarn android
+or
+npm run android
+```

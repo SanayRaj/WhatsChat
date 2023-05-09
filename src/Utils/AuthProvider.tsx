@@ -9,20 +9,26 @@ export const useAuth: any = () => useContext(AuthContext);
 
 const AuthProvider: React.FC<{children: JSX.Element}> = ({children}) => {
   const [appSession, setAppSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Supabase.auth
-      .getSession()
-      .then(({data: {session}}) => setAppSession(session));
+    Supabase.auth.getSession().then(({data: {session}}) => {
+      setAppSession(session);
+      setLoading(false);
+      SplashScreen.hide();
+    });
 
-    Supabase.auth.onAuthStateChange((_event, session) =>
-      setAppSession(session)
-    );
-    SplashScreen.hide();
+    Supabase.auth.onAuthStateChange((_event, session) => {
+      setAppSession(session);
+      setLoading(false);
+      SplashScreen.hide();
+    });
   }, []);
 
   return (
-    <AuthContext.Provider value={{appSession}}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{appSession}}>
+      {!loading && children}
+    </AuthContext.Provider>
   );
 };
 
